@@ -19,7 +19,12 @@ export default function App() {
     remove, favorite, isWriting, toggleFavorite } = useSavedRecipes();
   const results = search.data ?? [];
   const visible = filter === "All" ? saved : saved.filter((recipe) => recipe.category === filter);
-  const clearErrors = () => { create.reset(); update.reset(); remove.reset(); favorite.reset(); };
+  const clearErrors = () => {
+    create.reset();
+    update.reset();
+    remove.reset();
+    favorite.reset();
+  };
 
   return (
     <div className="recipe-page min-h-screen py-8 px-4">
@@ -39,7 +44,8 @@ export default function App() {
               {results.map((meal) => <MealCard key={meal.mealId} meal={meal}
                 onSave={(recipe) => {
                   if (isWriting || savedMealIds.has(recipe.mealId)) return;
-                  clearErrors(); create.mutate(recipe);
+                  clearErrors();
+                  create.mutate(recipe);
                 }}
                 isSaved={savedMealIds.has(meal.mealId)}
                 isSaving={create.isPending && create.variables?.mealId === meal.mealId} />)}

@@ -1,8 +1,8 @@
 # My Recipe Manager
 
-My MA 2 recipe app. Search for food on TheMealDB, save meals to your collection,
-and edit their preparation time and notes. You can filter saved recipes by
-category, delete them, and mark favorites with the star.
+A recipe app for MA 2. Search for a meal, save it, and add your own time and
+notes. Use the category buttons to filter the list, or click a star to mark
+a favorite. You can also delete saved meals.
 
 This version uses a local API instead of localStorage. Saved recipes are in
 `db.json`. The `ma1-final` tag keeps the earlier MA 1 version.
@@ -51,10 +51,10 @@ buttons also come from TheMealDB, as required by the assessment.
 
 ## How the data works
 
-TheMealDB is read-only. `meals.api.ts` converts its field names into the recipe
-shape used by the components and removes empty ingredients. It returns an empty
-array when a search has no matches. The saved-recipe API uses GET, POST, PATCH,
-and DELETE. Components call hooks instead of making HTTP requests themselves.
+Meals come from TheMealDB. The API file changes its field names to the names
+used in the app and removes blank ingredients. No matches means an empty list.
+Saved meals use GET to load, POST to save, PATCH to edit, and DELETE to remove.
+The components use hooks to do this.
 
 ## Query keys
 
