@@ -1,0 +1,24 @@
+{
+  "recipes": [
+    {
+      "id": 1,
+      "mealId": "52940",
+      "title": "Brown Stew Chicken",
+      "category": "Chicken",
+      "thumb": "https://www.themealdb.com/images/media/meals/sypxpx1515365095.jpg",
+      "time": 45,
+      "notes": "",
+      "favorite": false
+    },
+    {
+      "id": 2,
+      "mealId": "52977",
+      "title": "Corba",
+      "category": "Side",
+      "thumb": "https://www.themealdb.com/images/media/meals/58oia61564916529.jpg",
+      "time": 30,
+      "notes": "Halve the lemon next time.",
+      "favorite": true
+    }
+  ]
+}
