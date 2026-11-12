@@ -7,14 +7,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "api": "json-server --watch db.json --port 3001 --delay 800",
     "test": "vitest run --environment jsdom"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.107.1",
     "axios": "^1.21.1",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.5"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.3",
@@ -25,7 +25,6 @@
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.0",
     "jsdom": "^31.0.0",
-    "json-server": "0.17.4",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.9.3",
