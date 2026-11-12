@@ -1,5 +1,4 @@
-
-/** Exactly what TheMealDB sends. Note the twenty numbered ingredient keys. */
+// Data from TheMealDB.
 export interface Meal {
   idMeal: string;
   strMeal: string;
@@ -8,7 +7,7 @@ export interface Meal {
   [key: string]: string | null;
 }
 
-/** What our components use. No `str` prefixes, ingredients already flat. */
+// Data used in the app.
 export interface Recipe {
   mealId: string;
   title: string;

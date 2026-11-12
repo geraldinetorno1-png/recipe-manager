@@ -1,12 +1,12 @@
 import type { Recipe } from "@/features/meals/meals.types";
 
-/** A recipe once json-server has stored it and assigned an id. */
+// Saved recipes have an id from the server.
 export interface SavedRecipe extends Recipe {
   id: number;
 }
 
-/** What we send to create one: everything except the id, which is the server's job. */
+// New recipes do not have an id yet.
 export type NewRecipe = Recipe;
 
-/** A PATCH body: the id says which row, the rest are only the fields that changed. */
+// Send the id and the fields being edited.
 export type RecipePatch = { id: number } & Partial<Omit<SavedRecipe, "id">>;

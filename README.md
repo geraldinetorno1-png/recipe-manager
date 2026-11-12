@@ -39,9 +39,15 @@ npm run build
 npm test
 ```
 
-The build checks TypeScript before bundling the app. The tests cover data
-conversion, empty search results, controlled edits, duplicate-save controls,
-query keys, retrying a search, and favorite rollback.
+The build checks for TypeScript errors. The tests check searches, saving,
+editing, and the star rollback.
+
+## Saved meals
+
+The instructions require at least four saved recipes. Brown Stew Chicken and
+Corba came with the starter. Spicy Arrabiata Penne and Sushi were saved from
+TheMealDB to make four. These exact dishes are not required. The category
+buttons also come from TheMealDB, as required by the assessment.
 
 ## How the data works
 
@@ -52,13 +58,12 @@ and DELETE. Components call hooks instead of making HTTP requests themselves.
 
 ## Query keys
 
-I use `["meals", term]` for searches because each search word needs its own
-cached results. Searching chicken, then corba, then chicken should show the
-correct meals each time. An empty term disables the query. `["categories"]`
-holds the category list and `["recipes"]` holds the saved collection, since
-neither request takes a changing search value. Saving, editing, and deleting
-invalidate the saved collection so it reloads from the server. The category
-filter is calculated from that collection without storing a second copy.
+The search key is `["meals", term]` so chicken and corba keep separate results.
+Going back to chicken shows chicken again. A blank search sends no request.
+`["categories"]` is for the category list and `["recipes"]` is for saved meals.
+Those requests do not need a search word in the key. After a save, edit, or
+delete, the app marks the saved list as stale and gets the latest list from
+the server. Filtering uses that list directly.
 
 ## Favorite rollback check
 
