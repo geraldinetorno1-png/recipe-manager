@@ -6,9 +6,24 @@
       "title": "Brown Stew Chicken",
       "category": "Chicken",
       "thumb": "https://www.themealdb.com/images/media/meals/sypxpx1515365095.jpg",
-      "time": 45,
-      "notes": "",
-      "favorite": false
+      "time": 50,
+      "notes": "Check the chicken before serving.",
+      "favorite": false,
+      "ingredients": [
+        "Chicken",
+        "Tomato",
+        "Onions",
+        "Garlic Clove",
+        "Red Pepper",
+        "Carrots",
+        "Lime",
+        "Thyme",
+        "Allspice",
+        "Soy Sauce",
+        "Cornstarch",
+        "Coconut Milk",
+        "Vegetable Oil"
+      ]
     },
     {
       "id": 2,
@@ -18,7 +33,61 @@
       "thumb": "https://www.themealdb.com/images/media/meals/58oia61564916529.jpg",
       "time": 30,
       "notes": "Halve the lemon next time.",
-      "favorite": true
+      "favorite": true,
+      "ingredients": [
+        "Lentils",
+        "Onion",
+        "Carrots",
+        "Tomato Puree",
+        "Cumin",
+        "Paprika",
+        "Mint",
+        "Thyme",
+        "Black Pepper",
+        "Red Pepper Flakes",
+        "Vegetable Stock",
+        "Water",
+        "Sea Salt"
+      ]
+    },
+    {
+      "mealId": "52771",
+      "title": "Spicy Arrabiata Penne",
+      "category": "Vegetarian",
+      "thumb": "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+      "ingredients": [
+        "penne rigate",
+        "olive oil",
+        "garlic",
+        "chopped tomatoes",
+        "red chilli flakes",
+        "italian seasoning",
+        "basil",
+        "Parmigiano-Reggiano"
+      ],
+      "time": 0,
+      "notes": "",
+      "favorite": false,
+      "id": 3
+    },
+    {
+      "mealId": "53065",
+      "title": "Sushi",
+      "category": "Seafood",
+      "thumb": "https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg",
+      "ingredients": [
+        "Sushi Rice",
+        "Rice wine",
+        "Caster Sugar",
+        "Mayonnaise",
+        "Rice wine",
+        "Soy Sauce",
+        "Cucumber"
+      ],
+      "time": 0,
+      "notes": "",
+      "favorite": false,
+      "id": 4
     }
   ]
 }
