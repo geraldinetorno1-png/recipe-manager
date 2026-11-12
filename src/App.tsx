@@ -25,7 +25,10 @@ export default function App() {
     <div className="recipe-page min-h-screen py-8 px-4">
       <main className="max-w-4xl mx-auto space-y-6">
         <header className="page-heading"><h1 className="text-3xl font-bold">my recipes :)</h1></header>
-        <SearchBar onSearch={setTerm} />
+        <SearchBar onSearch={(nextTerm) => {
+          if (nextTerm === term) void search.refetch();
+          else setTerm(nextTerm);
+        }} />
         <section aria-label="Search results" className="space-y-3">
           {search.isLoading && <p role="status">Searching...</p>}
           {search.isError && <p role="alert">Could not load meals. Check your connection and try again.</p>}
