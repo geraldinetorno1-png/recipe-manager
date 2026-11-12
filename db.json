@@ -8,7 +8,7 @@
       "thumb": "https://www.themealdb.com/images/media/meals/sypxpx1515365095.jpg",
       "time": 50,
       "notes": "Check the chicken before serving.",
-      "favorite": false,
+      "favorite": true,
       "ingredients": [
         "Chicken",
         "Tomato",
