@@ -1,6 +1,6 @@
-Vercel deployment: pending.
+https://recipe-manager-pi-eight.vercel.app
 
-![Saved recipes in the production preview](docs/ma3-preview.png)
+![Saved recipes on the live app](docs/ma3-live.png)
 
 # My recipes
 
@@ -58,6 +58,6 @@ The committed vercel.json serves index.html for application routes. Without it, 
 
 Automated tests cover browser storage, corrupt data, failed writes, auth persistence, route redirects, autofocus, missing meals, search retries, edits and optimistic stars. The production preview was checked for saving, editing, starring and refreshing saved recipes.
 
-Live Vercel deployment checks and the deliberate deployment failure exercises are pending. A missing environment variable should trigger the explicit VITE_MEALDB_URL startup error in this implementation; the handout's HTML-as-JSON example assumes that guard is absent.
+The Vercel production deployment is live. Direct recipe URLs survive refresh, saving persists after refresh, signed-out Saved redirects to Login and returns after sign-in, unknown paths show the app 404, and /recipe/99999999 shows “No such recipe”. The live browser check reported no console errors or warnings. The deliberate deployment failure exercises are still pending. A missing environment variable should trigger the explicit VITE_MEALDB_URL startup error in this implementation; the handout's HTML-as-JSON example assumes that guard is absent.
 
 The MA2 version, including its original saved data and rollback screenshot, is preserved at the `ma2-final` tag. MA3 commits start after that tag.
