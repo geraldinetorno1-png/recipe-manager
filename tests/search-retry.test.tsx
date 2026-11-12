@@ -2,10 +2,11 @@ import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "@/App";
-import { api, mealdb } from "@/lib/api";
+import { mealdb } from "@/lib/api";
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 it("can retry a failed search without changing the term", async () => {
-  vi.spyOn(api, "get").mockResolvedValue({ data: [] });
+  localStorage.clear();
+  window.history.replaceState({}, "", "/");
   let attempts = 0;
   vi.spyOn(mealdb, "get").mockImplementation(async (url) => {
     if (url === "/categories.php") return { data: { categories: [] } };

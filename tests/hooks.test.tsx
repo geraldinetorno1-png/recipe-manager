@@ -4,8 +4,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useSavedRecipes } from "@/features/recipes/recipes.hooks";
 import { useSearchMeals } from "@/features/meals/meals.hooks";
-import { api, mealdb } from "@/lib/api";
-const recipe = { id: 1, mealId: "1", title: "Soup", category: "Side", thumb: "", ingredients: [], time: 30, notes: "", favorite: false };
+import * as recipesApi from "@/features/recipes/recipes.api";
+import { mealdb } from "@/lib/api";
+const recipe = { id: "saved-1", mealId: "1", title: "Soup", category: "Side", thumb: "", ingredients: [], time: 30, notes: "", favorite: false };
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 function setup() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
@@ -13,9 +14,9 @@ function setup() {
   return { client, wrapper };
 }
 it("updates the star before PATCH settles and restores it on failure", async () => {
-  vi.spyOn(api, "get").mockResolvedValue({ data: [recipe] });
+  vi.spyOn(recipesApi, "getRecipes").mockResolvedValue([recipe]);
   let rejectWrite: (error: Error) => void = () => {};
-  vi.spyOn(api, "patch").mockImplementation(() => new Promise((_resolve, reject) => { rejectWrite = reject; }));
+  vi.spyOn(recipesApi, "updateRecipe").mockImplementation(() => new Promise((_resolve, reject) => { rejectWrite = reject; }));
   const { client, wrapper } = setup();
   const { result } = renderHook(() => useSavedRecipes(), { wrapper });
   await waitFor(() => expect(result.current.saved).toHaveLength(1));

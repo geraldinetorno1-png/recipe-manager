@@ -2,7 +2,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import EditRecipeForm from "@/components/EditRecipeForm";
 import MealCard from "@/components/MealCard";
-const recipe = { id: 1, mealId: "1", title: "Soup", category: "Side", thumb: "", ingredients: [], time: 30, notes: "Less salt", favorite: false };
+const recipe = { id: "saved-1", mealId: "1", title: "Soup", category: "Side", thumb: "", ingredients: [], time: 30, notes: "Less salt", favorite: false };
 afterEach(cleanup);
 it("does not send an unchanged edit", () => {
   const onSave = vi.fn(); const onCancel = vi.fn();
@@ -16,7 +16,7 @@ it("saves only id, time and trimmed notes", () => {
   fireEvent.change(screen.getByLabelText("Prep time (minutes)"), { target: { value: "45" } });
   fireEvent.change(screen.getByLabelText("Notes"), { target: { value: "  More pepper  " } });
   fireEvent.click(screen.getByText("Save changes"));
-  expect(onSave).toHaveBeenCalledWith({ id: 1, time: 45, notes: "More pepper" });
+  expect(onSave).toHaveBeenCalledWith({ id: "saved-1", time: 45, notes: "More pepper" });
 });
 it("prevents another save while saving or already saved", () => {
   const onSave = vi.fn();
