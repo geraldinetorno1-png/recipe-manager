@@ -1,4 +1,4 @@
-import RecipeCard from "./RecipeCard";
+import RecipeCard from "@/components/RecipeCard";
 import type { SavedRecipe } from "@/features/recipes/recipes.types";
 
 interface RecipeListProps {
@@ -25,7 +25,7 @@ export default function RecipeList({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="recipe-list grid grid-cols-1 md:grid-cols-2 gap-4">
       {recipes.map((recipe) => (
         <RecipeCard
           key={recipe.id}

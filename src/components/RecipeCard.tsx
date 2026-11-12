@@ -18,7 +18,7 @@ export default function RecipeCard({
   const { id, title, category, thumb, time, notes, favorite } = recipe;
 
   return (
-    <div className="card bg-base-100 shadow">
+    <div className="recipe-card card bg-base-100">
       <div className="card-body">
         <div className="flex justify-between items-start gap-3">
           <div className="flex gap-3 items-start">
@@ -37,7 +37,8 @@ export default function RecipeCard({
           <button
             className="btn btn-ghost btn-sm text-2xl leading-none"
             onClick={() => onToggleFavorite(recipe)}
-            aria-label={favorite ? "Unfavorite" : "Favorite"}
+            aria-label={`Favorite ${title}`}
+            aria-pressed={favorite}
           >
             {favorite ? "★" : "☆"}
           </button>

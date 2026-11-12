@@ -12,11 +12,12 @@ export default function CategoryFilter({
   const options = ["All", ...categories];
 
   return (
-    <div className="flex flex-wrap gap-2 justify-center">
+    <div className="category-buttons flex flex-wrap gap-2">
       {options.map((c) => (
         <button
           key={c}
-          className={`btn btn-sm ${activeFilter === c ? "btn-primary" : "btn-outline"}`}
+          className="category-button"
+          aria-pressed={activeFilter === c}
           onClick={() => onFilterChange(c)}
         >
           {c}

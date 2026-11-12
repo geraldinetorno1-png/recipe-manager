@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Two base URLs, two instances. Neither one carries a credential.
 const mealdbURL = import.meta.env.VITE_MEALDB_URL;
 const apiURL = import.meta.env.VITE_API_URL;
 

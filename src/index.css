@@ -339,3 +339,13 @@ body {
   background: #d5e4f2;
   font-weight: bold;
 }
+
+.catalogue .card-body { padding: 12px; }
+.catalogue .card { border-radius: 2px; box-shadow: none; }
+.catalogue .card-title { font-size: 16px; }
+.catalogue figure img { height: 160px; }
+.recipe-page .btn:disabled { opacity: .6; cursor: default; }
+.recipe-page .modal-box { background: #fff; color: #242424; }
+.recipe-page .textarea { color: #242424; }
+.recipe-page [role="alert"] { color: #8d2424; background: #fff5f3; padding: 8px; }
+.add-form input[type="text"] { width: 260px; }

@@ -7,8 +7,6 @@ interface MealCardProps {
   isSaving: boolean;
 }
 
-// A single CATALOGUE result from TheMealDB. Not saved yet, so it has no id —
-// only a mealId. That is why the prop is `Recipe` and not `SavedRecipe`.
 export default function MealCard({ meal, onSave, isSaved, isSaving }: MealCardProps) {
   const { title, category, thumb, ingredients } = meal;
 
