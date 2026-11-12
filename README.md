@@ -60,6 +60,8 @@ Vite puts this URL into the built JavaScript. Changing it needs a redeploy. It i
 
 The tests cover storage, broken saved data, failed writes, login, redirects, missing meals, search retries and editing. The live app was also checked for saving and refresh, recipe deep links, login redirects, 404 pages and `/recipe/99999999`. It opened in an incognito window, and the browser check showed no console errors or warnings.
 
-Still to do: the handout's deliberate deployment failure exercises and confirmation of the teacher's collaborator access. With the current startup guard, a missing environment variable shows a VITE_MEALDB_URL error before any meal request is sent.
+The deployment failure exercises are recorded in [deployment checks](docs/deployment-checks.md). A missing production variable produced a blank page with the VITE_MEALDB_URL startup error. Removing the rewrite made recipe-page refreshes return Vercel’s 404. Both settings were restored.
+
+The collaborator invitation has been sent to `jeffdteach` and is awaiting acceptance.
 
 The `ma2-final` tag keeps the MA2 version, its saved recipes and rollback screenshot. MA3 commits come after that tag.
