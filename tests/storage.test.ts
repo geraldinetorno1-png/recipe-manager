@@ -28,3 +28,9 @@ it("reports storage write failures", async () => {
   vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("Storage full"); });
   await expect(createRecipe(meal)).rejects.toThrow("Storage full");
 });
+it("recovers from valid JSON containing malformed recipe rows", async () => {
+  for (const corrupt of ["[null]", "[{}]", '[{"id":"broken","ingredients":null}]']) {
+    localStorage.setItem("saved-recipes", corrupt);
+    expect(await getRecipes()).toEqual([]);
+  }
+});

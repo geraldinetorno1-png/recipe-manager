@@ -1,10 +1,19 @@
 import type { SavedRecipe, NewRecipe, RecipePatch } from "@/features/recipes/recipes.types";
 
 const KEY = "saved-recipes";
+function isSavedRecipe(value: unknown): value is SavedRecipe {
+  if (!value || typeof value !== "object") return false;
+  const row = value as Record<string, unknown>;
+  return ["id", "mealId", "title", "category", "thumb", "notes"].every(key => typeof row[key] === "string")
+    && typeof row.time === "number" && Number.isFinite(row.time) && row.time >= 0
+    && typeof row.favorite === "boolean" && Array.isArray(row.ingredients)
+    && row.ingredients.every(ingredient => typeof ingredient === "string");
+}
+
 const read = (): SavedRecipe[] => {
   try {
     const rows: unknown = JSON.parse(localStorage.getItem(KEY) ?? "[]");
-    return Array.isArray(rows) ? rows as SavedRecipe[] : [];
+    return Array.isArray(rows) ? rows.filter(isSavedRecipe) : [];
   } catch {
     return [];
   }
