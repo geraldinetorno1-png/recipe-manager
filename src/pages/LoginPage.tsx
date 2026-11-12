@@ -28,7 +28,7 @@ export default function LoginPage() {
   return (
     <section className="login-panel space-y-3">
       <h2 className="text-xl font-bold">Sign in</h2>
-      <p>Enter a display name to open your saved recipes.</p>
+      <p>Enter your name to see your saved recipes.</p>
       <form onSubmit={submit} className="space-y-3">
         <label className="block" htmlFor="display-name">Display name</label>
         <input id="display-name" ref={nameRef} className="input input-sm" value={name}
@@ -36,7 +36,7 @@ export default function LoginPage() {
         <button className="btn btn-primary block" disabled={!name.trim()}>Continue</button>
       </form>
       {error && <p role="alert">{error}</p>}
-      <p className="text-sm">This is a practice login, with no password. Recipes stay in this browser and are shared by display names on this browser.</p>
+      <p className="text-sm">No password needed for this class demo. Saved recipes stay in this browser, even if you use a different name.</p>
     </section>
   );
 }

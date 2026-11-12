@@ -4,7 +4,7 @@ https://recipe-manager-pi-eight.vercel.app
 
 # My recipes
 
-My MA3 recipe app. Search TheMealDB, open a recipe, and save it in this browser. The Saved page has category filters, stars, and an edit form for prep time and notes.
+A recipe app for MA3. Search for meals, open their ingredients, and save the ones you want. Saved recipes have stars, category filters, prep time and notes.
 
 ## Run it
 
@@ -16,7 +16,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Only one terminal is needed now. There is no recipe API server.
+One terminal is enough. MA3 uses browser storage, so there is no json-server to start.
 
 ```sh
 npm test
@@ -26,38 +26,40 @@ npm run preview
 
 ## Pages
 
-- `/`: search meals and save results.
-- `/login`: enter a display name.
-- `/saved`: saved recipes, behind the login guard.
-- `/recipe/:mealId`: a meal from TheMealDB, with its ingredients and a Save button.
-- Other paths: the app's 404 page.
+- `/` — search and save meals.
+- `/login` — enter a display name.
+- `/saved` — view and edit saved recipes after signing in.
+- `/recipe/:mealId` — view one meal and its ingredients.
+- Any other path — a 404 page with a link back to Search.
 
-Recipe titles use React Router links. A shared layout contains the navigation. The pathless RequireAuth route guards Saved and remembers where the visitor was going. Redirects use replace so Back does not repeatedly enter the guard.
+The header is shared across the pages. Recipe titles use React Router links. Opening Saved while signed out takes you to Login, then back to Saved. The redirects use `replace` so Back doesn't keep sending you through the login guard.
 
-The login is a class demonstration, not security. It has no password or server. The display name is stored as `auth-user`. All display names in the same browser share the `saved-recipes` collection. Clearing browser data removes it, and a different browser starts empty.
+This is a practice login, not a secure account. There is no password. Names and recipes stay in the browser. Changing the name doesn't create a separate collection, and clearing browser data removes the saved recipes.
 
-## Storage change
+## What changed from MA2
 
-The four async functions in recipes.api.ts now read and write localStorage. Their names and arguments stayed the same, and recipes.hooks.ts did not need to change. Each new recipe gets a string UUID. Components read the id type from SavedRecipe instead of repeating a numeric type. Bad stored rows are ignored; failed writes are shown by the existing mutation error states.
+The four functions in recipes.api.ts now use localStorage. They still return promises, so recipes.hooks.ts stayed unchanged. New recipes get a string id from `crypto.randomUUID()`. Card props use `SavedRecipe["id"]` so their types follow the model.
 
-TanStack Query still manages loading and changes. Recipes use `["recipes"]`, searches use `["meals", term]`, categories use `["categories"]`, and details use `["meal", mealId]`. Changing a search term gets its own cache entry. Editing, deleting, and saving invalidate recipes. Stars update the cache first and restore it if saving fails.
+Bad stored rows are skipped. If a write fails, the app shows an error. The star changes immediately and goes back to its previous value if saving fails.
 
-## Vercel setup
+Query keys are `["recipes"]`, `["meals", term]`, `["categories"]` and `["meal", mealId]`. Different search terms and recipe ids have separate cache entries. Saving, editing and deleting refresh the saved-recipe query.
 
-Import `geraldinetorno1-png/recipe-manager`, choose Vite, and set this variable for Production and Preview:
+## Deployment
+
+The Vercel project imports `geraldinetorno1-png/recipe-manager` with the Vite preset. Production and Preview use:
 
 ```text
 VITE_MEALDB_URL=https://www.themealdb.com/api/json/v1/1
 ```
 
-The value is included in the JavaScript during the build. Changing it requires a redeploy, not a browser refresh. VITE_ variables are public, so they must not contain secrets.
+Vite puts this URL into the built JavaScript. Changing it needs a redeploy. It isn't secret, so passwords and private keys don't belong in VITE_ variables.
 
-The committed vercel.json serves index.html for application routes. Without it, clicking a recipe link may work but opening or refreshing that URL directly can return a host 404.
+`vercel.json` sends page requests to index.html. React Router then picks the page. Without that rewrite, a recipe link can work when clicked but fail when opened directly or refreshed.
 
 ## Checks
 
-Automated tests cover browser storage, corrupt data, failed writes, auth persistence, route redirects, autofocus, missing meals, search retries, edits and optimistic stars. The production preview was checked for saving, editing, starring and refreshing saved recipes.
+The tests cover storage, broken saved data, failed writes, login, redirects, missing meals, search retries and editing. The live app was also checked for saving and refresh, recipe deep links, login redirects, 404 pages and `/recipe/99999999`. It opened in an incognito window, and the browser check showed no console errors or warnings.
 
-The Vercel production deployment is live. Direct recipe URLs survive refresh, saving persists after refresh, signed-out Saved redirects to Login and returns after sign-in, unknown paths show the app 404, and /recipe/99999999 shows “No such recipe”. The live browser check reported no console errors or warnings. The deliberate deployment failure exercises are still pending. A missing environment variable should trigger the explicit VITE_MEALDB_URL startup error in this implementation; the handout's HTML-as-JSON example assumes that guard is absent.
+Still to do: the handout's deliberate deployment failure exercises and confirmation of the teacher's collaborator access. With the current startup guard, a missing environment variable shows a VITE_MEALDB_URL error before any meal request is sent.
 
-The MA2 version, including its original saved data and rollback screenshot, is preserved at the `ma2-final` tag. MA3 commits start after that tag.
+The `ma2-final` tag keeps the MA2 version, its saved recipes and rollback screenshot. MA3 commits come after that tag.
