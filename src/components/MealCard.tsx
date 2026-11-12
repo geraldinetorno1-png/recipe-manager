@@ -14,9 +14,9 @@ export default function MealCard({ meal, onSave, isSaved, isSaving }: MealCardPr
 
   return (
     <div className="card bg-base-100 shadow">
-      <figure className="h-40 overflow-hidden">
+      {thumb && <figure className="h-40 overflow-hidden">
         <img src={thumb} alt={title} className="w-full object-cover" />
-      </figure>
+      </figure>}
       <div className="card-body">
         <h2 className="card-title text-base">{title}</h2>
         <div className="flex gap-2">
@@ -25,16 +25,10 @@ export default function MealCard({ meal, onSave, isSaved, isSaving }: MealCardPr
             {ingredients.length} ingredients
           </span>
         </div>
-
-        {/* TODO 9 — The Save button.
-            Three states, and all three matter:
-              - already saved  -> disabled, label "Saved"
-              - save in flight -> disabled, label "Saving..."
-              - otherwise      -> enabled, label "Save", calls onSave(meal)
-            Without the isSaved guard a student can save the same meal six
-            times, and the rubric checks for exactly that. */}
         <div className="card-actions justify-end mt-2">
-          <button className="btn btn-sm btn-primary">Save</button>
+          <button className="btn btn-sm btn-primary" disabled={isSaved || isSaving} onClick={() => onSave(meal)}>
+            {isSaved ? "Saved" : isSaving ? "Saving..." : "Save"}
+          </button>
         </div>
       </div>
     </div>
