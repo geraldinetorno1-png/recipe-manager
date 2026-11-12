@@ -3,43 +3,39 @@ import { useState } from "react";
 const CATEGORIES = ["Breakfast", "Lunch", "Dinner", "Dessert"];
 
 export default function RecipeForm({ onAdd }) {
-  // TODO: create controlled state for title, category, and time.
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [time, setTime] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: reject if title is empty (after .trim()).
-    // TODO: call onAdd({ title, category, time: Number(time) || 0 }).
-    // TODO: clear the form fields.
+    if (!title.trim()) {
+      setError("Please enter a recipe title.");
+      return;
+    }
+    onAdd({ title: title.trim(), category, time: Number(time) || 0 });
+    setTitle("");
+    setCategory("");
+    setTime("");
+    setError("");
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="card bg-base-100 shadow p-4 grid grid-cols-1 md:grid-cols-4 gap-3"
-    >
-      {/* TODO: title input (text) — must be controlled */}
-      <input
-        type="text"
-        placeholder="Recipe title"
-        className="input input-bordered md:col-span-2"
-      />
-
-      {/* TODO: category dropdown — must be controlled. Map over CATEGORIES for the options. */}
-      <select className="select select-bordered">
+    <form onSubmit={handleSubmit}
+      className="add-form card p-4 grid grid-cols-1 md:grid-cols-4 gap-3">
+      <input type="text" aria-label="Recipe title" placeholder="Name of the food" required
+        className="input input-bordered md:col-span-2" value={title}
+        onChange={(e) => { setTitle(e.target.value); setError(""); }} />
+      <select aria-label="Category" className="select select-bordered" required
+        value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="">Select category</option>
+        {CATEGORIES.map((value) => <option key={value} value={value}>{value}</option>)}
       </select>
-
-      {/* TODO: time input (number) — must be controlled */}
-      <input
-        type="number"
-        placeholder="Time (min)"
-        min="0"
-        className="input input-bordered"
-      />
-
-      <button type="submit" className="btn btn-primary md:col-span-4">
-        Add Recipe
-      </button>
+      <input type="number" aria-label="Time in minutes" placeholder="Time (min)" min="0"
+        className="input input-bordered" value={time} onChange={(e) => setTime(e.target.value)} />
+      {error && <p role="alert" className="text-error md:col-span-4">{error}</p>}
+      <button type="submit" className="btn btn-primary md:col-span-4">Add to my list</button>
     </form>
   );
 }
