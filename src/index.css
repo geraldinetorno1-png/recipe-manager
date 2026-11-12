@@ -129,3 +129,15 @@ body {
   .recipe-card:nth-child(3n) { margin-left: 16px; }
   .recipe-card:nth-child(5n) { width: 43%; margin-top: 7px; }
 }
+
+.site-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; }
+.nav-link { display: inline-block; padding: 4px 8px; border: 1px solid #999; background: #fff; border-radius: 2px; color: #233e70; }
+.nav-link.active { background: #dce8f5; font-weight: bold; border-bottom: 3px solid #34678b; }
+.user-name { overflow-wrap: anywhere; }
+.recipe-page .btn-primary { color: white; }
+.recipe-page a:focus-visible, .recipe-page button:focus-visible { outline: 2px solid #34678b; outline-offset: 3px; }
+.recipe-page .card-title a:hover { text-decoration: underline; }
+.login-panel { max-width: 390px; background: #fffcebee; padding: 18px; }
+.login-panel .input { width: 100%; max-width: 270px; }
+.detail-panel { background: #fffcebee; padding: 18px; }
+.detail-photo { max-height: 330px; max-width: 100%; object-fit: contain; }
