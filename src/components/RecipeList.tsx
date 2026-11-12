@@ -19,7 +19,7 @@ export default function RecipeList({
   if (recipes.length === 0) {
     return (
       <div className="text-center py-12 text-base-content/60">
-        Nothing saved in this category yet. Search above and save a recipe.
+        Nothing saved in this category yet. Go to Search and save a recipe.
       </div>
     );
   }

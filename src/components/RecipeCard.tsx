@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { SavedRecipe } from "@/features/recipes/recipes.types";
 
 interface RecipeCardProps {
@@ -26,7 +27,7 @@ export default function RecipeCard({
               <img src={thumb} alt={title} className="w-16 h-16 rounded object-cover" />
             )}
             <div>
-              <h2 className="card-title text-base">{title}</h2>
+              <h2 className="card-title text-base"><Link to={`/recipe/${recipe.mealId}`}>{title}</Link></h2>
               <div className="flex gap-2 mt-1">
                 <span className="badge badge-primary badge-sm">{category}</span>
                 <span className="badge badge-ghost badge-sm">{time} min</span>

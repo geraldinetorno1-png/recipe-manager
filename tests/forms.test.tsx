@@ -1,3 +1,4 @@
+import { MemoryRouter } from "react-router-dom";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import EditRecipeForm from "@/components/EditRecipeForm";
@@ -20,10 +21,10 @@ it("saves only id, time and trimmed notes", () => {
 });
 it("prevents another save while saving or already saved", () => {
   const onSave = vi.fn();
-  const view = render(<MealCard meal={recipe} onSave={onSave} isSaving={true} isSaved={false} />);
+  const view = render(<MemoryRouter><MealCard meal={recipe} onSave={onSave} isSaving={true} isSaved={false} /></MemoryRouter>);
   expect((screen.getByRole("button") as HTMLButtonElement).disabled).toBe(true);
   expect(screen.getByRole("button").textContent).toBe("Saving...");
-  view.rerender(<MealCard meal={recipe} onSave={onSave} isSaving={false} isSaved={true} />);
+  view.rerender(<MemoryRouter><MealCard meal={recipe} onSave={onSave} isSaving={false} isSaved={true} /></MemoryRouter>);
   fireEvent.click(screen.getByRole("button"));
   expect(screen.getByRole("button").textContent).toBe("Saved");
   expect(onSave).not.toHaveBeenCalled();
