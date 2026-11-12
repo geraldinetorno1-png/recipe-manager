@@ -1,9 +1,8 @@
-import { useState } from "react";
-// TODO: import your components once you build them
-// import RecipeForm from "./components/RecipeForm";
-// import CategoryFilter from "./components/CategoryFilter";
-// import RecipeList from "./components/RecipeList";
-// import SummaryBar from "./components/SummaryBar";
+import { useEffect, useState } from "react";
+import RecipeForm from "./components/RecipeForm";
+import CategoryFilter from "./components/CategoryFilter";
+import RecipeList from "./components/RecipeList";
+import SummaryBar from "./components/SummaryBar";
 
 const STARTER_RECIPES = [
   { id: 1, title: "Chicken Adobo", category: "Dinner", time: 45, favorite: false },
@@ -15,59 +14,65 @@ const STARTER_RECIPES = [
 ];
 
 export default function App() {
-  // TODO 1: create the `recipes` state using STARTER_RECIPES as the initial value.
-  //         Later, wrap it in the lazy initializer that reads from localStorage.
-  const [recipes, setRecipes] = useState(STARTER_RECIPES);
+  // Read saved data once, when the component first mounts.
+  const [recipes, setRecipes] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("recipe"));
+      return Array.isArray(saved) ? saved : STARTER_RECIPES;
+    } catch {
+      return STARTER_RECIPES;
+    }
+  });
+  const [filter, setFilter] = useState(() => {
+    const saved = localStorage.getItem("filter");
+    return ["All", "Breakfast", "Lunch", "Dinner", "Dessert"].includes(saved)
+      ? saved : "All";
+  });
 
-  // TODO 2: create the `filter` state, starting as "All".
-  //         Later, wrap it in the lazy initializer that reads from localStorage.
+  useEffect(() => {
+    localStorage.setItem("recipe", JSON.stringify(recipes));
+  }, [recipes]);
 
-  // TODO 3: add useEffect to persist `recipes` to localStorage whenever it changes.
+  useEffect(() => {
+    localStorage.setItem("filter", filter);
+  }, [filter]);
 
-  // TODO 4: add useEffect to persist `filter` to localStorage whenever it changes.
+  const favorites = recipes.filter((recipe) => recipe.favorite).length;
+  useEffect(() => {
+    document.title = `Recipes · ${favorites} ★`;
+  }, [favorites]);
 
-  // TODO 5: add useEffect to update `document.title` with the favorite count.
-  //         Example format: `Recipes · 3 ★`
+  const handleAdd = (recipe) => {
+    setRecipes((current) => [
+      ...current,
+      { ...recipe, id: Math.max(Date.now(), ...current.map((r) => r.id + 1)), favorite: false },
+    ]);
+  };
+  const handleToggleFavorite = (id) => {
+    setRecipes((current) => current.map((recipe) =>
+      recipe.id === id ? { ...recipe, favorite: !recipe.favorite } : recipe
+    ));
+  };
+  const handleDelete = (id) => {
+    setRecipes((current) => current.filter((recipe) => recipe.id !== id));
+  };
 
-  // TODO 6: write handleAdd(recipe) — adds a new recipe with a unique id (Date.now()).
-  //         Use the spread operator, NOT .push().
-
-  // TODO 7: write handleToggleFavorite(id) — flips the `favorite` field of the matching recipe.
-  //         Use .map() and spread; do NOT mutate the object directly.
-
-  // TODO 8: write handleDelete(id) — removes the recipe with that id.
-  //         Use .filter().
-
-  // TODO 9: derive `visibleRecipes` in render — if filter === "All" show all,
-  //         otherwise filter by category. Do NOT store this in state.
+  // This list follows the current state; it does not need separate state.
+  const visibleRecipes = filter === "All"
+    ? recipes : recipes.filter((recipe) => recipe.category === filter);
 
   return (
-    <div className="min-h-screen bg-base-200 py-8 px-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <header className="text-center">
-          <h1 className="text-4xl font-bold">Recipe Manager</h1>
-          <p className="text-base-content/70 mt-2">
-            Your personal collection of favorite dishes
-          </p>
+    <div className="recipe-page min-h-screen py-8 px-4">
+      <main className="max-w-4xl mx-auto space-y-6">
+        <header className="page-heading">
+          <h1 className="text-3xl font-bold">my recipes :)</h1>
         </header>
-
-        {/* TODO: render <RecipeForm onAdd={handleAdd} /> */}
-
-        {/* TODO: render <SummaryBar total={...} favorites={...} /> */}
-
-        {/* TODO: render <CategoryFilter activeFilter={filter} onFilterChange={setFilter} /> */}
-
-        {/* TODO: render <RecipeList recipes={visibleRecipes}
-                                    onToggleFavorite={handleToggleFavorite}
-                                    onDelete={handleDelete} /> */}
-
-        <div className="alert alert-info">
-          <span>
-            Delete this alert once you have wired up your components. Then run{" "}
-            <code className="font-mono">npm run dev</code> and check the browser.
-          </span>
-        </div>
-      </div>
+        <RecipeForm onAdd={handleAdd} />
+        <SummaryBar total={recipes.length} favorites={favorites} />
+        <CategoryFilter activeFilter={filter} onFilterChange={setFilter} />
+        <p className="list-note">the food list</p>
+        <RecipeList recipes={visibleRecipes} onToggleFavorite={handleToggleFavorite} onDelete={handleDelete} />
+      </main>
     </div>
   );
 }
