@@ -28,10 +28,10 @@ export function useSavedRecipes() {
 
   // TODO 8 — Save a catalogue result.
   // Same shape as `remove` above: mutationFn, then invalidate on success.
-  const create = useMutation({ mutationFn: createRecipe });
+  const create = useMutation({ mutationFn: createRecipe, onSuccess: invalidate });
 
   // TODO 11 — Save an edit (time + notes). Same shape again.
-  const update = useMutation({ mutationFn: updateRecipe });
+  const update = useMutation({ mutationFn: updateRecipe, onSuccess: invalidate });
 
   // TODO 12 — The favourite toggle, OPTIMISTICALLY.
   //
