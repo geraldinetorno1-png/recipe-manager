@@ -1,102 +1,63 @@
-# My Recipe Manager
+Vercel deployment: pending.
 
-A recipe app for MA 2. Search for a meal, save it, and add your own time and
-notes. Use the category buttons to filter the list, or click a star to mark
-a favorite. You can also delete saved meals.
+![Saved recipes in the production preview](docs/ma3-preview.png)
 
-This version uses a local API instead of localStorage. Saved recipes are in
-`db.json`. The `ma1-final` tag keeps the earlier MA 1 version.
+# My recipes
+
+My MA3 recipe app. Search TheMealDB, open a recipe, and save it in this browser. The Saved page has category filters, stars, and an edit form for prep time and notes.
 
 ## Run it
 
-Use Node 22.12+ (tested with Node 24). Internet is needed for TheMealDB.
+Use Node 20 or newer.
 
 ```sh
 npm install
 cp .env.example .env
-```
-
-Keep two terminals open in the project folder.
-
-Terminal 1:
-
-```sh
-npm run api
-```
-
-Terminal 2:
-
-```sh
 npm run dev
 ```
 
-Open the URL printed by Vite. The recipe API runs on port 3001. It uses
-`json-server` version `0.17.4` with an 800 ms delay so the saving and favorite
-states are visible. Keep both servers running.
+Only one terminal is needed now. There is no recipe API server.
 
 ```sh
-npm run build
 npm test
+npm run build
+npm run preview
 ```
 
-The build checks for TypeScript errors. The tests check searches, saving,
-editing, and the star rollback.
+## Pages
 
-## Saved meals
+- `/`: search meals and save results.
+- `/login`: enter a display name.
+- `/saved`: saved recipes, behind the login guard.
+- `/recipe/:mealId`: a meal from TheMealDB, with its ingredients and a Save button.
+- Other paths: the app's 404 page.
 
-The instructions require at least four saved recipes. Brown Stew Chicken and
-Corba came with the starter. Spicy Arrabiata Penne and Sushi were saved from
-TheMealDB to make four. These exact dishes are not required. The category
-buttons also come from TheMealDB, as required by the assessment.
+Recipe titles use React Router links. A shared layout contains the navigation. The pathless RequireAuth route guards Saved and remembers where the visitor was going. Redirects use replace so Back does not repeatedly enter the guard.
 
-## How the data works
+The login is a class demonstration, not security. It has no password or server. The display name is stored as `auth-user`. All display names in the same browser share the `saved-recipes` collection. Clearing browser data removes it, and a different browser starts empty.
 
-Meals come from TheMealDB. The API file changes its field names to the names
-used in the app and removes blank ingredients. No matches means an empty list.
-Saved meals use GET to load, POST to save, PATCH to edit, and DELETE to remove.
-The components use hooks to do this.
+## Storage change
 
-## Query keys
+The four async functions in recipes.api.ts now read and write localStorage. Their names and arguments stayed the same, and recipes.hooks.ts did not need to change. Each new recipe gets a string UUID. Components read the id type from SavedRecipe instead of repeating a numeric type. Bad stored rows are ignored; failed writes are shown by the existing mutation error states.
 
-The search key is `["meals", term]` so chicken and corba keep separate results.
-Going back to chicken shows chicken again. A blank search sends no request.
-`["categories"]` is for the category list and `["recipes"]` is for saved meals.
-Those requests do not need a search word in the key. After a save, edit, or
-delete, the app marks the saved list as stale and gets the latest list from
-the server. Filtering uses that list directly.
+TanStack Query still manages loading and changes. Recipes use `["recipes"]`, searches use `["meals", term]`, categories use `["categories"]`, and details use `["meal", mealId]`. Changing a search term gets its own cache entry. Editing, deleting, and saving invalidate recipes. Stars update the cache first and restore it if saving fails.
 
-## Favorite rollback check
+## Vercel setup
 
-The star changes before the server responds. The hook cancels a pending refetch,
-keeps the previous list, and changes the matching recipe without mutating it.
-If PATCH fails, the old list is restored. It invalidates the list after either
-success or failure.
+Import `geraldinetorno1-png/recipe-manager`, choose Vite, and set this variable for Production and Preview:
 
-For this check, the PATCH URL temporarily ended in `${id}-nope`. The server
-returned 404 after about 800 ms. The first screenshot shows Brown Stew Chicken
-with a filled star while the request is pending:
+```text
+VITE_MEALDB_URL=https://www.themealdb.com/api/json/v1/1
+```
 
-![Star filled before the failed request returns](docs/rollback-pending.png)
+The value is included in the JavaScript during the build. Changing it requires a redeploy, not a browser refresh. VITE_ variables are public, so they must not contain secrets.
 
-After the failure, it returned to an empty star and the favorite count went
-from two back to one:
+The committed vercel.json serves index.html for application routes. Without it, clicking a recipe link may work but opening or refreshing that URL directly can return a host 404.
 
-![Star restored after the failed request](docs/rollback-restored.png)
+## Checks
 
-The temporary URL was removed afterwards. A normal favorite update was checked
-against the server and saved successfully.
+Automated tests cover browser storage, corrupt data, failed writes, auth persistence, route redirects, autofocus, missing meals, search retries, edits and optimistic stars. The production preview was checked for saving, editing, starring and refreshing saved recipes.
 
-## Before submitting
+Live Vercel deployment checks and the deliberate deployment failure exercises are pending. A missing environment variable should trigger the explicit VITE_MEALDB_URL startup error in this implementation; the handout's HTML-as-JSON example assumes that guard is absent.
 
-- The repository must be public.
-- Confirm `jeffdteach` is a collaborator in the repository settings.
-- Keep `.env` untracked and commit `.env.example` and `db.json`.
-- Run both server commands on your computer and try a search, save, edit, star,
-  and delete.
-- Check the commits with `git log ma1-final..HEAD --oneline`.
-
-The development session verified a fresh install, build, tests, and live API
-operations. Its sandbox could not start the directory watcher (`EMFILE`), so
-its temporary preview used the same API without watch mode. The required
-`npm run api` command above still includes `--watch` and should be checked in
-your normal terminal before submission.
+The MA2 version, including its original saved data and rollback screenshot, is preserved at the `ma2-final` tag. MA3 commits start after that tag.
